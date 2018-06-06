@@ -32,5 +32,8 @@ bower_components
 #Sass Cache
 .sass-cache
 
+#jasmine spec runner
+_SpecRunner.html
+
 #Idea files
 .idea

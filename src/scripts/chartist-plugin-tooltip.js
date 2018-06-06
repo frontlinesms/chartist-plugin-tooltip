@@ -25,9 +25,9 @@
 
     return function tooltip(chart) {
       var tooltipSelector = options.pointClass;
-      if (chart.constructor.name == Chartist.Bar.prototype.constructor.name) {
+      if (chart instanceof Chartist.Bar) {
         tooltipSelector = 'ct-bar';
-      } else if (chart.constructor.name ==  Chartist.Pie.prototype.constructor.name) {
+      } else if (chart instanceof  Chartist.Pie) {
         // Added support for donut graph
         if (chart.options.donut) {
           tooltipSelector = 'ct-slice-donut';
@@ -112,12 +112,11 @@
 
         if(tooltipText) {
           $toolTip.innerHTML = tooltipText;
-          setPosition(event);
-          show($toolTip);
-
           // Remember height and width to avoid wrong position in IE
           height = $toolTip.offsetHeight;
           width = $toolTip.offsetWidth;
+          setPosition(event);
+          show($toolTip);
         }
       });
 
@@ -149,6 +148,11 @@
 
           $toolTip.style.top = (anchorY || top) + offsetY + 'px';
           $toolTip.style.left = (anchorX || left) + offsetX + 'px';
+        } else if (options.appendToEndOfBarChart) {
+          var lineDimensions = event.target.getBoundingClientRect();
+          var linePos = lineDimensions.x + lineDimensions.width;
+          $toolTip.style.left = linePos - ($toolTip.offsetWidth/2) + 'px';
+          $toolTip.style.top = event.pageY + offsetY + 'px';
         } else {
           $toolTip.style.top = event.pageY + offsetY + 'px';
           $toolTip.style.left = event.pageX + offsetX + 'px';
